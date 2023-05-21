@@ -35,34 +35,119 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
-    <section class="header">
-      <h2 class="title">Sobering Look at Alcohol Use</h2>
+    <!-- Title header -->
+    <section>
+      <div class="row"><br></div> <!--This provides padding for top of page. Fix with css.-->
+      <h2 class="section-heading title">Sobering Look at Alcohol Use</h2>
+      <div class="row">
+        <div class="eleven column">
+          <img class="u-max-full-width" src="images/charts/AnnTotPerCap_map.png"
+            alt="WHO Map of Total alcohol consumption per capita, 2016">
+        </div>
+      </div>
     </section>
+
 
     <!-- Motivation -->
     <div class="docs-section" id="intro">
-      <h3 class="docs-header">Motivation</h3>
-      <p>According to the CDC, 1 in 5 people age 19-40 die in alcohol related causes. $35B is spent annually in the US
-        on care for alcohol use and use disorder, but still 88k people die every year. Globally, it is the 4th leading
-        cause of preventable death in OECD countries.</p>
+      <!-- <h3 class="docs-header">Motivation</h3> -->
+      <p>According to the CDC, 1 in 5 people age 19-40 die of alcohol related causes. $35B is spent annually in the US
+        on care for alcohol use and use disorder, but still 88k people die every year. Globally, alcohol and drug
+        effects is the 4th leading
+        cause of preventable death in OECD countries. <br><br>The smallest populace States have the highest average
+        consumption. The highest is New Hampshire, ~17 L/yr.
+        The lowest in the world is Afghanistan, ~0.02 L/yr.
+      </p>
     </div>
+
+    <!-- Charts -->
+    <div class="section">
+        <h5>Consumption in Units of Blood</h5>
+        <p>A unit of blood is ~500 mL (one-half a liter, or one pint).</p>
+        <div class="row">
+          <div class="one-third column volume">
+            <h6>Blood in Average Adult</h6>
+            <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
+          </div>
+          <div class="one-third column volume">
+            <h6>Highest Alcohol Consumer</h6>
+            <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_top.png">
+          </div>
+          <div class="one-third column volume">
+            <p>Lowest Alcohol Consumer</p>
+            <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_bottom.png">
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+      <h5 class="header">Top 19 Consuming States over time, 2010-2019</h5>
+      <p class="description">Per capita per year. US States included since population sizes are comparable to smaller
+        countries.
+      </p>
+      <div class="eleven column">
+        <img class="u-max-full-width" src="images/charts/AnnTotPerCap_smlMult.png">
+      </div>
+      <!-- <div class="one-half column category">
+          <img class="u-max-full-width" src="images/placeholder.png">
+        </div> -->
+
+    </div>
+
+
+
+    <!-- References -->
+    <section>
+      <div class="row"><br></div> <!--This provides padding for top of section. Fix with css.-->
+      <h5 class="heading">References</h5>
+      <div class="row">
+        <div class="eleven column">
+          <!-- <p class="section-description">Skeleton is an amazingly easy place to start with responsive development. If you want to learn more, just visit the documentation!</p> -->
+          <ul>
+            <li><a
+                href="https://www.who.int/images/default-source/maps/global_adult_percapita_consumption_2016.png?sfvrsn=6cc7b2e7_0">World
+                Health Organization (WHO) Map of Total alcohol consumption per capita, 2016</a></li>
+            <li><a href="https://www.who.int/data/gho/indicator-metadata-registry/imr-details/4759">WHO Global Data of
+                Total alcohol consumption per capita</a></li>
+            <li><a href="https://pubs.niaaa.nih.gov/publications/surveillance119/CONS20.htm">US Data of Total alcohol
+                consumption per capita, National Institute on Alcohol Abuse and Alcoholism (NIAAA) Surveillance Report
+                #119</a></li>
+            <li><a
+                href="https://www.oecd-ilibrary.org/sites/3b4fdbf2-en/index.html?itemId=/content/component/3b4fdbf2-en">Organisation
+                for Economic Co-operation and Development (OECD) Data on Preventable Deaths</a></li>
+            <li><a href="https://www.cdc.gov/chronicdisease/resources/publications/factsheets/alcohol.htm">CDC Data on
+                Excessive Alchol Use</a></li>
+            <li><a href="https://www.redcrossblood.org/donate-blood/dlp/whole-blood.html">Red Cross, Whole Blood</a>
+            </li>
+            <li><a href="https://clinicalcenter.nih.gov/blooddonor/donationtypes/whole_blood.html">National Institutes
+                of Health (NIH), Whole Blood</a></li>
+            <!-- <li>
+              Item 2
+              <ul>
+                <li>Item 2.1</li>
+                <li>Item 2.2</li>
+              </ul>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Charts -->
-  <div class="container" id="charts">
-    <h3 class="docs-header">Charts</h3>
-    <p class="description">Will be including more charts</p>
+  <!-- <div class="container">
+    <h3 class="header">Charts</h3>
     <div class="column">
       <div class="row">
-        <div class="one-half column category">
-          <img class="u-max-full-width" src="images/placeholder.png">
-        </div>
-        <div class="one-half column category">
-          <img class="u-max-full-width" src="images/placeholder.png">
+        <h5 class="header">Annual total alcohol consumption</h5>
+        <p class="description">Per capita per year. The smallest populace states have highest average consumption, ~17
+          L/yr</p>
+        <div class="eleven column">
+          <img class="u-max-full-width" src="images/charts/AnnTotPerCap_smlMult.png">
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- <div class="section values">
     <div class="container">
@@ -83,14 +168,6 @@
           <p class="value-description">Percentage of users that are frustrated with page load times.</p>
         </div>
       </div>
-    </div>
-  </div> -->
-
-  <!-- <div class="section get-help">
-    <div class="container">
-      <h3 class="section-heading">Need help getting started?</h3>
-      <p class="section-description">Skeleton is an amazingly easy place to start with responsive development. If you want to learn more, just visit the documentation!</p>
-      <a class="button button-primary" href="http://getskeleton.com">View Skeleton Docs</a>
     </div>
   </div> -->
 
