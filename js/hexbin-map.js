@@ -1,6 +1,6 @@
-(function(viz, d3) { // viz namespace
+(function (viz, d3) { // viz namespace
 
-  viz.HexbinMap = function(dispatch, world, data, nestedData, dateFormat) {
+  viz.HexbinMap = function (dispatch, world, data, nestedData, dateFormat) {
 
     // var formatDate = d3.timeFormat(dateFormat);
 
@@ -18,7 +18,7 @@
     function createHexbinChart() {
       var svg = d3.select("#map");
       var width = svg.attr("width"),
-          height = svg.attr("height");
+        height = svg.attr("height");
 
       var projection = d3.geoMercator()
         .scale(150)
@@ -26,16 +26,18 @@
 
       var path = d3.geoPath()
         .projection(projection);
-      
-      var colorFill = d3.domain(0, 20)
+
+      var colorFill = d3.scale
+        .linear()
+        .domain([0, 20])
         .range(["black", "steelblue"])
         .interpolate(d3.interpolateLab);
 
-      data.forEach(function(country) {
+      data.forEach(function (country) {
         country.projection = projection([country.longitude, country.latitude]);
       });
 
-      var points = data.map(function(country) {
+      var points = data.map(function (country) {
         return country.projection;
       });
 
@@ -51,7 +53,7 @@
 
       function selectDateRange(dateRange) {
         var filteredTweets = filterTweetsByDateRange(dateRange);
-        var filteredPoints = filteredTweets.map(function(tweet) {
+        var filteredPoints = filteredTweets.map(function (tweet) {
           return tweet.projection;
         });
         updateHexbins(filteredPoints);
@@ -64,16 +66,16 @@
 
       function filterTweetsByDateRange(dateRange) {
         var dayDifference = d3.timeDay.count(dateRange.from, dateRange.to);
-        if (dayDifference === 0 ) return [];
+        if (dayDifference === 0) return [];
 
         var keys = d3.range(0, dayDifference + 1)
-          .map(function(n) {
+          .map(function (n) {
             var d = d3.timeDay.offset(dateRange.from, n);
             return formatDate(d);
           });
 
         var arraysToConcat = [];
-        keys.forEach(function(key) {
+        keys.forEach(function (key) {
           if (key in keyedTweets) {
             arraysToConcat.push(keyedTweets[key]);
           }
@@ -87,62 +89,62 @@
       }
 
       function addMap() {
-        svg = d3.select("#map")
+        svg = d3.select("#hexmapglobe")
           .attr("width", width)
           .attr("height", height)
-          .on("click", function() {
+          .on("click", function () {
             dispatch.call("removeSelection", this);
             removeSelection();
           });
 
         svg.append("path")
-         .datum(topojson.feature(world, world.objects.land))
-         .attr("class", "land")
-         .attr("d", path);
+          .datum(topojson.feature(world, world.objects.land))
+          .attr("class", "land")
+          .attr("d", path);
 
         svg.append("path")
-         .datum(topojson.mesh(world, world.objects.countries))
-         .attr("class", "boundary")
-         .attr("d", path);
+          .datum(topojson.mesh(world, world.objects.countries))
+          .attr("class", "boundary")
+          .attr("d", path);
 
-         hexbinsGroup = svg.append("g")
-           .attr("clip-path", "url(#clip)");
+        hexbinsGroup = svg.append("g")
+          .attr("clip-path", "url(#clip)");
       }
 
       function createHexbins(points) {
         var bins = hexbin(points);
 
         color
-          .domain([d3.max(bins, function(d) { return d.length; }), 0]);
+          .domain([d3.max(bins, function (d) { return d.length; }), 0]);
 
         hexbinsGroup
           .selectAll(".hexagon")
-            .data(bins, function(d) { return d.x + "," + d.y; })
+          .data(bins, function (d) { return d.x + "," + d.y; })
           .enter().append("path")
-            .attr("class", "hexagon")
-            .attr("d", hexbin.hexagon())
-            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-            .style("fill", function(d) { return colorFill(d.length); });
+          .attr("class", "hexagon")
+          .attr("d", hexbin.hexagon())
+          .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
+          .style("fill", function (d) { return colorFill(d.length); });
       }
 
       function updateHexbins(points) {
         var bins = hexbin(points);
 
         color
-          .domain([d3.max(bins, function(d) { return d.length; }), 0]);
+          .domain([d3.max(bins, function (d) { return d.length; }), 0]);
 
         var hexagon = hexbinsGroup.selectAll(".hexagon")
-          .data(bins, function(d) { return d.x + "," + d.y; });
+          .data(bins, function (d) { return d.x + "," + d.y; });
 
         hexagon.exit().remove();
 
         hexagon
           .enter().append("path")
-            .attr("class", "hexagon")
-            .attr("d", hexbin.hexagon())
-            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+          .attr("class", "hexagon")
+          .attr("d", hexbin.hexagon())
+          .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
           .merge(hexagon)
-            .style("fill", function(d) { return color(d.length); });
+          .style("fill", function (d) { return color(d.length); });
       }
     }
 
