@@ -27,13 +27,25 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="/sobering/css/style.css">
 
   <!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js" charset="utf-8"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+  <script src="https://d3js.org/d3.v4.js" charset="utf-8"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+  <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+  <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+  
 
-  </head>
+  <!-- Hexbin Visualization -->
+  <script src="/sobering/js/controller.js"></script>
+  <script src="/sobering/js/hexbin-map.js"></script>
+  <script src="/sobering/js/time-series.js"></script>
+  <script src="/sobering/js/pie-chart.js"></script>
+
+
+</head>
 
 <body>
 
@@ -70,30 +82,40 @@
       <h5 class="header">Consumption by Region</h5>
       <p class="description">...
       </p>
-      <div id="regionMap">
-        <svg id="my_dataviz" width="400" height="300"></svg>
-      </div>
+      <svg id="map" width="1000" height="600"></svg>
+      <!-- <div>
+        <svg id="time-series" width="800" height="200"></svg>
+        <svg id="pie-chart" width="200" height="200"></svg>
+      </div> -->
 
-      <!-- <div class="one-half column category">
-          <img class="u-max-full-width" src="images/placeholder.png">
-        </div> -->
+      
+
+      <div class="one-half column category">
+
+        <!-- <img class="u-max-full-width" src="images/placeholder.png"> -->
+      </div>
 
     </div>
     <div class="section">
       <h5>Consumption in Units of Blood</h5>
-      <p>A unit of blood is ~500 mL (one-half a liter, or one pint).</p>
+      <p>A unit of blood is ~500 mL (one-half a liter, or one pint). The largest alcohol consumers imbibe around triple
+        the volume equivalent in their bodies yearly.</p>
       <div class="row">
         <div class="one-third column volume">
-          <h6>Blood in Average Adult</h6>
+          <h6>Units of Blood in Average Adult</h6>
           <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
         </div>
         <div class="one-third column volume">
-          <h6>Highest Alcohol Consumer</h6>
-          <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_top.png">
+          <h6>Highest Alcohol Consumption in Blood</h6>
+          <!-- <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_top.png"> -->
+          <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
+          <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
+          <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
         </div>
         <div class="one-third column volume">
-          <p>Lowest Alcohol Consumer</p>
-          <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_bottom.png">
+          <!-- <p>Lowest Alcohol Consumer</p>
+          <div id="graph"></div> -->
+          <!-- <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_bottom.png"> -->
         </div>
       </div>
     </div>
@@ -112,7 +134,7 @@
 
     </div>
 
-    
+
 
 
 
@@ -154,50 +176,27 @@
     </section>
   </div>
 
-  <!-- Charts -->
-  <!-- <div class="container">
-    <h3 class="header">Charts</h3>
-    <div class="column">
-      <div class="row">
-        <h5 class="header">Annual total alcohol consumption</h5>
-        <p class="description">Per capita per year. The smallest populace states have highest average consumption, ~17
-          L/yr</p>
-        <div class="eleven column">
-          <img class="u-max-full-width" src="images/charts/AnnTotPerCap_smlMult.png">
-        </div>
-      </div>
-    </div>
-  </div> -->
 
-  <!-- <div class="section values">
-    <div class="container">
-      <div class="row">
-        <div class="one-third column value">
-          <h2 class="value-multiplier">67%</h2>
-          <h5 class="value-heading">Purchase Increase</h5>
-          <p class="value-description">Percentage of users more likely to purchase on mobile friendly site.</p>
-        </div>
-        <div class="one-third column value">
-          <h2 class="value-multiplier">90%</h2>
-          <h5 class="value-heading">Multi-device Users</h5>
-          <p class="value-description">Most of the world accesses the internet on multiple devices.</p>
-        </div>
-        <div class="one-third column value">
-          <h2 class="value-multiplier">66%</h2>
-          <h5 class="value-heading">Sad Users</h5>
-          <p class="value-description">Percentage of users that are frustrated with page load times.</p>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-  
   <!-- Map
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script src="js/map.js" async></script>
+  <!-- <script src="js/map.js" async></script> -->
+
+  <script>
+    // http://pubs.opengroup.org/onlinepubs/009695399/functions/strptime.html
+    var dateFormat = "%d-%m-%Y";
+    // https://github.com/d3/d3-queue
+    d3.queue()
+      // https://github.com/NickQiZhu/d3-cookbook/blob/master/data/world-50m.json
+      .defer(d3.json, "/sobering/data/world-50m.json")
+      // .defer(d3.csv, "/sobering/data/avgDrinksLocationsSimple.csv")
+      .defer(d3.csv, "/sobering/data/data.csv")
+      .await(function (error, world, data) {
+        if (error) throw error;
+        new viz.Controller(world, data, dateFormat);
+      });
+  </script>
 
 
-  
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>

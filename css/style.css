@@ -1,0 +1,50 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 20px;
+}
+
+svg {
+  margin: 0;
+  padding: 0;
+  background: #efefef;
+}
+
+text {
+  font-family: sans-serif;
+}
+
+.percentage {
+  text-anchor: middle;
+}
+
+.land {
+  fill: #ccc;
+}
+
+.boundary {
+  fill: none;
+  stroke: #aaa;
+  stroke-width: .5px;
+}
+
+.hexagon {
+  fill: none;
+  stroke: black;
+  stroke-width: .5px;
+}
+
+#time-series {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+#pie-chart {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="/sobering/css/style.css" rel="stylesheet">
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+  <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+  <!-- Hexbin Visualization -->
+  <script src="/sobering/js/controller.js"></script>
+  <script src="/sobering/js/hexbin-map.js"></script>
+  <script src="/sobering/js/time-series.js"></script>
+  <script src="/sobering/js/pie-chart.js"></script>
+  <title>D3 Geo Hexbins</title>
+</head>
+<body>
+
+<svg id="map" width="1000" height="600"></svg>
+<div>
+  <svg id="time-series" width="800" height="200"></svg>
+  <svg id="pie-chart" width="200" height="200"></svg>
+</div>
+
+<script>
+// http://pubs.opengroup.org/onlinepubs/009695399/functions/strptime.html
+var dateFormat = "%d-%m-%Y";
+// https://github.com/d3/d3-queue
+d3.queue()
+  // https://github.com/NickQiZhu/d3-cookbook/blob/master/data/world-50m.json
+  .defer(d3.json, "/sobering/data/world-50m.json")
+  .defer(d3.csv, "/sobering/data/data.csv")
+  .await(function(error, world, data) {
+    if (error) throw error;
+    new viz.Controller(world, data, dateFormat);
+  });
+</script>
+
+</body>
+</html>
