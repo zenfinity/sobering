@@ -18,11 +18,7 @@ const projection = d3.geoGuyou()
     .translate([width / 2.2, height / 1.5]);
 const pathGenerator = d3.geoPath().projection(projection);
 
-const g = svg.append('g');
 
-g.append('path')
-    .attr('class', 'sphere')
-    .attr('d', pathGenerator({ type: 'Sphere' }));
 
 //   svg.call(d3.zoom().on('zoom', () => {
 //     g.attr('transform', event.transform);
@@ -30,23 +26,55 @@ g.append('path')
 // g.call(d3.zoom().on("zoom", function () {
 //     svg.attr("transform", d3.event.transform)
 // }));
+const zoom = d3.zoom()
+    .scaleExtent([1, 40])
+    .translateExtent([[-100, -100], [width + 90, height + 100]])
+    .on("zoom", zoomed);
+
+
+// svg.call(d3.zoom()
+//     .extent([[0, 0], [width, height]])
+//     .scaleExtent([1, 8])
+//     .on("zoom", zoomed));
+
+svg.call(zoom)
+
+
+function zoomed({ transform }) {
+    g.attr("transform", transform);
+}
+
+function reset() {
+    svg.transition()
+      .duration(750)
+      .call(zoom.transform, d3.zoomIdentity);
+}
+
+d3.select("#reset")
+    .on("click", reset)
+
+const g = svg.append('g');
+
+g.append('path')
+    .attr('class', 'sphere')
+    .attr('d', pathGenerator({ type: 'Sphere' }));
 
 Promise.all([
-    d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
-    d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json')
+    d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/110m.tsv'),
+    d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json')
 ]).then(([tsvData, topoJSONdata]) => {
 
-    const countryName = tsvData.reduce((accumulator, d) => {
-        accumulator[d.iso_n3] = d.name;
-        return accumulator;
-    }, {});
+    // const countryName = tsvData.reduce((accumulator, d) => {
+    //     accumulator[d.iso_n3] = d.name;
+    //     return accumulator;
+    // }, {});
 
-    /*
+
     const countryName = {};
     tsvData.forEach(d => {
-      countryName[d.iso_n3] = d.name;
+        countryName[d.iso_n3] = d.name;
     });
-    */
+
 
     const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
     g.selectAll('path').data(countries.features)

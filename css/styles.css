@@ -4,7 +4,7 @@ body {
   }
   
   .sphere {
-    fill: lightcyan;
+    fill: rgba(224, 255, 255, 0.4);
   }
   
   .country {
