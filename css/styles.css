@@ -1,0 +1,21 @@
+body {
+    margin: 0px;
+    overflow: hidden;
+  }
+  
+  .sphere {
+    fill: lightcyan;
+  }
+  
+  .country {
+    fill: darkgrey;
+    stroke: whitesmoke;
+    stroke-width: 0.05px;
+    opacity: .75;
+  }
+  
+  .country:hover {
+    /* fill: gray; */
+    stroke: gray;
+    stroke-width: 1px;
+  }
