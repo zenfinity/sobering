@@ -1,44 +1,25 @@
-// import {
-//     select,
-//     json,
-//     tsv,
-//     geoPath,
-//     geoNaturalEarth1,
-//     zoom,
-//     event
-//   } from 'd3';
-//   import { feature } from 'topojson';
 
-const svg = d3.select('svg'),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
+
+const svg = d3.select('#mapInteractive');
+const width = svg.attr("width");
+const height = svg.attr("height");
 
 const projection = d3.geoGuyou()
-    .scale(155)
+    .scale(100)
     .translate([width / 2.2, height / 1.5]);
+
 const pathGenerator = d3.geoPath().projection(projection);
 
 
+const g = svg.append('g');
 
-//   svg.call(d3.zoom().on('zoom', () => {
-//     g.attr('transform', event.transform);
-//   }));
-// g.call(d3.zoom().on("zoom", function () {
-//     svg.attr("transform", d3.event.transform)
-// }));
 const zoom = d3.zoom()
-    .scaleExtent([1, 40])
+    .extent([[0, 0], [width, height]])
+    .scaleExtent([1, 8])
     .translateExtent([[-100, -100], [width + 90, height + 100]])
     .on("zoom", zoomed);
 
-
-// svg.call(d3.zoom()
-//     .extent([[0, 0], [width, height]])
-//     .scaleExtent([1, 8])
-//     .on("zoom", zoomed));
-
 svg.call(zoom)
-
 
 function zoomed({ transform }) {
     g.attr("transform", transform);
@@ -52,8 +33,6 @@ function reset() {
 
 d3.select("#reset")
     .on("click", reset)
-
-const g = svg.append('g');
 
 g.append('path')
     .attr('class', 'sphere')

@@ -28,14 +28,14 @@
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="/sobering/css/style.css">
+  <link rel="stylesheet" href="css/map.css">
 
   <!-- Load d3.js -->
-  <script src="https://d3js.org/d3.v4.js" charset="utf-8"></script>
-  <script src="https://d3js.org/topojson.v2.min.js"></script>
-  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-  <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
-  <script src="https://d3js.org/d3-queue.v3.min.js"></script>
-  <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4"></script>
   
 
   <!-- Hexbin Visualization -->
@@ -82,9 +82,13 @@
       <h5 class="header">Consumption by Region</h5>
       <p class="description">...
       </p>
-      <svg id="mapworld" width="960" height="600"></svg>
-      <svg id="map" width="1000" height="600"></svg>
-      <svg id="hexbinmapglobe" width="1000" height="600"></svg>
+      <div class="map">
+        <svg id="mapInteractive" class="map" width="600" height="400"></svg>
+      </div>
+      
+      <div>
+        <button id="reset">Reset Zoom</button><br/>
+      </div>
       <!-- <div>
         <svg id="time-series" width="800" height="200"></svg>
         <svg id="pie-chart" width="200" height="200"></svg>
@@ -181,22 +185,8 @@
 
   <!-- Map
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!-- <script src="js/map.js" async></script> -->
+  <script src="js/index.js" async></script>
 
-  <script>
-    // http://pubs.opengroup.org/onlinepubs/009695399/functions/strptime.html
-    var dateFormat = "%d-%m-%Y";
-    // https://github.com/d3/d3-queue
-    d3.queue()
-      // https://github.com/NickQiZhu/d3-cookbook/blob/master/data/world-50m.json
-      .defer(d3.json, "/sobering/data/world-50m.json")
-      // .defer(d3.csv, "/sobering/data/avgDrinksLocationsSimple.csv")
-      .defer(d3.csv, "/sobering/data/data.csv")
-      .await(function (error, world, data) {
-        if (error) throw error;
-        new viz.Controller(world, data, dateFormat);
-      });
-  </script>
 
 
   <!-- End Document
