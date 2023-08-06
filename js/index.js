@@ -1,12 +1,12 @@
-///////////////////////////
-
+/////////////////////////// World Map ///////////////////////////
+// Initialize map elements
 const svg = d3.select('#mapInteractive');
-const width = svg.attr("width");
+const width = svg.attr("width"); // Grab from html tag
 const height = svg.attr("height");
 
 const projection = d3.geoEqualEarth()
-    .scale(150)
-    .translate([width / 2.2, height / 1.5]);
+    .scale(175)
+    .translate([width / 2, height / 2]);
 
 const pathGenerator = d3.geoPath().projection(projection);
 
@@ -16,10 +16,6 @@ const g = svg.append('g');
 
 // projection.fitExtent([[0, 0], [width, height]], g);
 // projection.fitSize([width, height], g);
-
-g.append('path')
-    .attr('class', 'sphere')
-    .attr('d', pathGenerator({ type: 'Sphere' }));
 
 //_________________Zoom
 const zoom = d3.zoom()
@@ -36,8 +32,8 @@ function zoomed({ transform }) {
 
 function reset() {
     svg.transition()
-      .duration(750)
-      .call(zoom.transform, d3.zoomIdentity);
+        .duration(750)
+        .call(zoom.transform, d3.zoomIdentity);
 }
 
 d3.select("#reset")
@@ -45,9 +41,33 @@ d3.select("#reset")
 
 
 
+
+
+// Lat Lng lines
+
+g.insert("path", "path.countries")
+    .datum(graticule.outline)
+    .attr("class", "outline")
+    .attr("d", pathGenerator)
+g.insert("path", "path.countries")
+    .datum(graticule)
+    .attr("class", "graticule")
+    .attr("d", pathGenerator)
+
+
+// Background "Sphere"
+// g.append('path')
+//     .attr('class', 'sphere')
+//     .attr('d', pathGenerator({ type: 'Sphere' }));
+
+
+
+
+
+
 Promise.all([
-    d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/110m.tsv'),
-    d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json')
+    d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
+    d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json')
 ]).then(([tsvData, topoJSONdata]) => {
 
     // const countryName = tsvData.reduce((accumulator, d) => {
@@ -61,6 +81,7 @@ Promise.all([
         countryName[d.iso_n3] = d.name;
     });
 
+    
 
     const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
     g.selectAll('path').data(countries.features)
@@ -69,12 +90,17 @@ Promise.all([
         .attr('d', pathGenerator)
         .append('title')
         .text(d => countryName[d.id])
-    
-    g.append("path")
-    .datum(graticule)
-    .attr("class", "graticule")
-    .attr("d", path);
 
+    // g.append("path")
+    //     .datum(graticule)
+    //     .attr("class", "graticule")
+    //     .attr("d", path);
     
+    // d3.select("svg").insert("path", "path.countries")
+    //     .datum(graticule.outline)
+    //     .attr("class", "graticule outline")
+    //     .attr("d", geoPath)
+
+
 
 });

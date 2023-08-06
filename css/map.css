@@ -3,15 +3,13 @@
     /* overflow: hidden; */
   }
   
-  .sphere {
-    fill: rgba(224, 255, 255, 0.4);
-  }
+  
   
   .country {
     fill: darkgrey;
     stroke: whitesmoke;
     stroke-width: 0.05px;
-    opacity: .75;
+    opacity: 1;
   }
   
   .country:hover {
@@ -21,11 +19,23 @@
   }
 
   .graticule {
-    fill: none;
-    stroke:aquamarine;
-    stroke-width: 2;
+    fill: transparent;
+    stroke:gray;
+    stroke-width: 1;
     stroke-dasharray: 2, 2;
+    opacity: .25;
   }
 
+  .outline {
+    fill: transparent;
+    stroke:gray;
+    stroke-width: 1;
+    /* stroke-dasharray: 2, 2; */
+    opacity: .25;
+  }
+
+  /* .sphere {
+    fill: rgba(224, 255, 255, 0.4);
+  } */
 
 
