@@ -14,6 +14,8 @@ const graticule = d3.geoGraticule();
 
 const g = svg.append('g');
 
+var hexData;
+
 // projection.fitExtent([[0, 0], [width, height]], g);
 // projection.fitSize([width, height], g);
 
@@ -66,20 +68,25 @@ g.insert("path", "path.countries")
 
 
 Promise.all([
-    d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
+    // d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
+    d3.csv('/sobering/data/avgDrinksLocations.csv'),
     d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json')
-]).then(([tsvData, topoJSONdata]) => {
-
+]).then(([csvData, topoJSONdata]) => {
+hexData = csvData.forEach(function(d) {
+    d.litres = +d.litres;
+    d["life_expectancy"] = +d["life_expectancy"];
+  });
+  console.log(hexData);
     // const countryName = tsvData.reduce((accumulator, d) => {
     //     accumulator[d.iso_n3] = d.name;
     //     return accumulator;
     // }, {});
 
 
-    const countryName = {};
-    tsvData.forEach(d => {
-        countryName[d.iso_n3] = d.name;
-    });
+    // const countryName = {};
+    // tsvData.forEach(d => {
+    //     countryName[d.iso_n3] = d.name;
+    // });
 
     
 
@@ -88,8 +95,8 @@ Promise.all([
         .enter().append('path')
         .attr('class', 'country')
         .attr('d', pathGenerator)
-        .append('title')
-        .text(d => countryName[d.id])
+        // .append('title')
+        // .text(d => countryName[d.id])
 
     // g.append("path")
     //     .datum(graticule)
