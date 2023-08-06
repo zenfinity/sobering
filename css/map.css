@@ -1,6 +1,6 @@
 .map {
     margin: 0px;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
   
   .sphere {
@@ -19,3 +19,13 @@
     stroke: gray;
     stroke-width: 1px;
   }
+
+  .graticule {
+    fill: none;
+    stroke:aquamarine;
+    stroke-width: 2;
+    stroke-dasharray: 2, 2;
+  }
+
+
+

@@ -4,18 +4,14 @@ const svg = d3.select('#mapInteractive');
 const width = svg.attr("width");
 const height = svg.attr("height");
 
-const projection = d3.geoEqualEarth()
-    .scale(150)
+const projection = d3.geoGuyou()
+    .scale(100)
     .translate([width / 2.2, height / 1.5]);
 
 const pathGenerator = d3.geoPath().projection(projection);
 
-const graticule = d3.geoGraticule();
 
 const g = svg.append('g');
-
-// projection.fitExtent([[0, 0], [width, height]], g);
-// projection.fitSize([width, height], g);
 
 g.append('path')
     .attr('class', 'sphere')
@@ -68,13 +64,6 @@ Promise.all([
         .attr('class', 'country')
         .attr('d', pathGenerator)
         .append('title')
-        .text(d => countryName[d.id])
-    
-    g.append("path")
-    .datum(graticule)
-    .attr("class", "graticule")
-    .attr("d", path);
-
-    
+        .text(d => countryName[d.id]);
 
 });
