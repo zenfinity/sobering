@@ -47,6 +47,13 @@
     /* .sphere {
     fill: rgba(224, 255, 255, 0.4);
   } */
+    .testCircle {
+      fill: red;
+      stroke: gray;
+      stroke-width: 1;
+      /* stroke-dasharray: 2, 2; */
+      opacity: 1;
+    }
 
     .countryInfo {
       fill: black;
@@ -122,10 +129,10 @@
 
     // Lat Lng lines
 
-    g.insert("path", "path.countries")
-      .datum(graticule.outline)
-      .attr("class", "outline")
-      .attr("d", pathGenerator)
+    // g.insert("path", "path.countries")
+    //   .datum(graticule.outline)
+    //   .attr("class", "outline")
+    //   .attr("d", pathGenerator)
     // g.insert("path", "path.countries")
     //   .datum(graticule)
     //   .attr("class", "graticule")
@@ -139,23 +146,20 @@
 
     // Can haz circle?
     // g.selectAll("path")
-    //     // .data(countryName)
-    //     // .enter().append("circle")
-    //     .append("circle")
-    //     .attr('r', 100)
-    //     .attr('cx', 10)
-    //     .attr('cy', 10)
-        // .attr('cx', function (d) {
-        //   console.log(d)
-        //   var coords = projection([d.Longitude, d.Latitude])
-        //   console.log(coords)
-        //   return 10;
-        // })
-        // .attr('cy', function (d) {
-        //   // var coords = projection([d.Longitude, d.Latitude])
-        //   // console.log(coords)
-        //   return 10;
-        // });
+    // .data(countryName)
+    // .enter().append("circle")
+
+    // .attr('cx', function (d) {
+    //   console.log(d)
+    //   var coords = projection([d.Longitude, d.Latitude])
+    //   console.log(coords)
+    //   return 10;
+    // })
+    // .attr('cy', function (d) {
+    //   // var coords = projection([d.Longitude, d.Latitude])
+    //   // console.log(coords)
+    //   return 10;
+
 
 
 
@@ -171,52 +175,77 @@
       // });
       // console.log(hexData);
       const countryName = tsvData.reduce((accumulator, d) => {
-          accumulator[d.iso_n3] = d.name;
-          return accumulator;
+        accumulator[d.iso_n3] = d.name;
+        return accumulator;
       }, {});
 
       // console.log(tsvData)
 
-      const countryInfo = {};
-      csvData.forEach(d => {
-        countryInfo[d.country_code] = {
-          'CountryName': d.country_name,
-          'Litres': d.litres = +d.litres, //convert string to number
-          'Life_Expectancy': d.life_expectancy = +d.life_expectancy,
-          'Latitude': d.latitude = +d.latitude,
-          'Longitude': d.longitude = +d.longitude
-        }
-      });
+      // const countryInfo = {};
+      // csvData.forEach(d => {
+      //   countryInfo[d.country_code] = {
+      //     'CountryName': d.country_name,
+      //     'Litres': d.litres = +d.litres, //convert string to number
+      //     'Life_Expectancy': d.life_expectancy = +d.life_expectancy,
+      //     'Latitude': d.latitude = +d.latitude,
+      //     'Longitude': d.longitude = +d.longitude
+      //   }
+      // });
 
-      console.log(countryInfo)
-
-
-
-      const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
-      g.selectAll('path').data(countries.features)
-        .enter().append('path')
-        .attr('class', 'country')
-        .attr('d', pathGenerator)
-
-
-      g.selectAll("path")
-        .data(countryName)
-        .enter().append("circle")
-        .attr('class', 'countryCircle')
-        .attr('r', 100)
-        // .attr('cx', 10)
-        // .attr('cy', 10)
-        .attr('cx', d => d.Latitude)
-        .attr('cy', function (d) {
-          // var coords = projection([d.Longitude, d.Latitude])
-          // console.log(coords)
-          return 10;
-        });
+      // console.log(countryInfo)
 
 
 
+      // const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
+      // g.selectAll('path').data(countries.features)
+      //   .enter().append('path')
+      //   .attr('class', 'country')
+      //   .attr('d', pathGenerator)
 
+      // g.selectAll('path')
+      //   .append("circle")
+      //   .attr('r', 1000)
+
+      
+
+      console.log(topoJSONdata)
+
+      // g.selectAll(".countryInfo")
+      //   .data(countryName)
+      //   .enter().append("circle")
+      //   .append("circle")
+      //   .attr('class', 'countryCircle')
+      //   .attr('r', 100)
+      //   // .attr('cx', 10)
+      //   // .attr('cy', 10)
+      //   .attr('cx', 100)
+      //   .attr('cy', 100);
     });
+
+    d3.csv('/sobering/data/avgDrinksLocations.csv', function (d) {
+      console.log(d)
+      d.longitude = +d.longitude;
+                d.latitude = +d.latitude;
+                d.litres = +d.litres;
+        return d;
+      }).then(csvData => {
+        svg.selectAll(".marker")
+          .data(csvData)
+          .enter().append("circle")
+          .attr("class", "countryInfo")
+          .attr("cx", d => projection([d.longitude, d.latitude])[0])
+          .attr("cy", d => projection([d.longitude, d.latitude])[1])
+          .attr("r", d => Math.sqrt(+d.litres) * 5); // Adjust the scale as needed
+      });
+      g
+        .append("circle")
+        .attr("class", "testCircle")
+        .attr('r', 10)
+        .attr('cx', 10)
+        .attr('cy', 10)
+
+
+
   </script>
 </body>
 
