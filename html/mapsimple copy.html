@@ -56,19 +56,19 @@
     }
 
     .countryInfo {
-      fill: black;
-      stroke: gray;
+      /* fill: transparent; */
+      stroke:cornflowerblue;
       stroke-width: 1;
       /* stroke-dasharray: 2, 2; */
-      opacity: 1;
+      opacity: .8;
     }
   </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7" charset="utf-8"></script>
+  <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js" charset="utf-8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-array@3" charset="utf-8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-geo@3" charset="utf-8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4" charset="utf-8"></script>
 </head>
 
 <body>
@@ -77,10 +77,13 @@
     <svg class="map" id="mapInteractive" width="960" height="480"></svg>
     <button id="reset">Reset Zoom</button><br />
   </div>
+  <svg id="seq1" width="580" height="40" ></svg>
 
   <!-- <script src="../js/map2.js"></script> -->
+  <!-- <script src="https://cdn.skypack.dev/d3-scale@4"></script> -->
   <script>
     /////////////////////////// World Map ///////////////////////////
+
     // Initialize map elements
     const svg = d3.select('#mapInteractive');
     const width = svg.attr("width"); // Grab from html tag
@@ -98,10 +101,10 @@
 
     var hexData;
 
-    // projection.fitExtent([[0, 0], [width, height]], g);
-    // projection.fitSize([width, height], g);
+    //_________________ Helper Functions
 
-    //_________________Zoom
+
+    //_________________ Zoom
     const zoom = d3.zoom()
       .extent([[0, 0], [width, height]])
       .scaleExtent([1, 8])
@@ -124,46 +127,22 @@
       .on("click", reset)
 
 
-
-
-
-    // Lat Lng lines
-
-    // g.insert("path", "path.countries")
-    //   .datum(graticule.outline)
-    //   .attr("class", "outline")
-    //   .attr("d", pathGenerator)
-    // g.insert("path", "path.countries")
-    //   .datum(graticule)
-    //   .attr("class", "graticule")
-    //   .attr("d", pathGenerator)
-
-
-    // Background "Sphere"
-    // g.append('path')
-    //     .attr('class', 'sphere')
-    //     .attr('d', pathGenerator({ type: 'Sphere' }));
-
-    // Can haz circle?
-    // g.selectAll("path")
-    // .data(countryName)
-    // .enter().append("circle")
-
-    // .attr('cx', function (d) {
-    //   console.log(d)
-    //   var coords = projection([d.Longitude, d.Latitude])
-    //   console.log(coords)
-    //   return 10;
-    // })
-    // .attr('cy', function (d) {
-    //   // var coords = projection([d.Longitude, d.Latitude])
-    //   // console.log(coords)
-    //   return 10;
+    //_________________ Lat Lng lines
+    g.insert("path", "path.countries")
+      .datum(graticule.outline)
+      .attr("class", "outline")
+      .attr("d", pathGenerator)
+    g.insert("path", "path.countries")
+      .datum(graticule)
+      .attr("class", "graticule")
+      .attr("d", pathGenerator)
 
 
 
 
 
+    //_________________ Draw
+    // Map and countries
     Promise.all([
       d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
       d3.csv('/sobering/data/avgDrinksLocations.csv'),
@@ -181,72 +160,103 @@
 
       // console.log(tsvData)
 
-      // const countryInfo = {};
-      // csvData.forEach(d => {
-      //   countryInfo[d.country_code] = {
-      //     'CountryName': d.country_name,
-      //     'Litres': d.litres = +d.litres, //convert string to number
-      //     'Life_Expectancy': d.life_expectancy = +d.life_expectancy,
-      //     'Latitude': d.latitude = +d.latitude,
-      //     'Longitude': d.longitude = +d.longitude
-      //   }
-      // });
+      const countryInfo = {};
+      csvData.forEach(d => {
+        countryInfo[d.country_code] = {
+          'CountryName': d.country_name,
+          'Litres': d.litres = +d.litres, //convert string to number
+          'Life_Expectancy': d.life_expectancy = +d.life_expectancy,
+          'Latitude': d.latitude = +d.latitude,
+          'Longitude': d.longitude = +d.longitude
+        }
+      });
 
       // console.log(countryInfo)
 
+      const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
+      g.selectAll('path').data(countries.features)
+        .enter().append('path')
+        .attr('class', 'country')
+        .attr('d', pathGenerator)
 
-
-      // const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
-      // g.selectAll('path').data(countries.features)
-      //   .enter().append('path')
-      //   .attr('class', 'country')
-      //   .attr('d', pathGenerator)
-
-      // g.selectAll('path')
-      //   .append("circle")
-      //   .attr('r', 1000)
-
-      
-
-      console.log(topoJSONdata)
-
-      // g.selectAll(".countryInfo")
-      //   .data(countryName)
-      //   .enter().append("circle")
-      //   .append("circle")
-      //   .attr('class', 'countryCircle')
-      //   .attr('r', 100)
-      //   // .attr('cx', 10)
-      //   // .attr('cy', 10)
-      //   .attr('cx', 100)
-      //   .attr('cy', 100);
     });
+    // Circle markers separately
+
+    // var myColor = d3.scaleLinear().domain([1,10]).range(["white", "blue"])
+    var myColor = d3.scaleLinear()
+      // .interpolator("purple", "orange")
+      .domain([0, 20])
+      .range(["white", "blue"]);
+    console.log(myColor(25));
+    // function colorScale(value) {
+    //   myColor = d3.scaleLinear().domain([1, 10]).range(["white", "blue"])
+    //   color = myColor(value)
+    //   console.log(color)
+    //   return color;
+    // }
 
     d3.csv('/sobering/data/avgDrinksLocations.csv', function (d) {
-      console.log(d)
+      // console.log(d)
       d.longitude = +d.longitude;
-                d.latitude = +d.latitude;
-                d.litres = +d.litres;
-        return d;
-      }).then(csvData => {
-        svg.selectAll(".marker")
-          .data(csvData)
-          .enter().append("circle")
-          .attr("class", "countryInfo")
-          .attr("cx", d => projection([d.longitude, d.latitude])[0])
-          .attr("cy", d => projection([d.longitude, d.latitude])[1])
-          .attr("r", d => Math.sqrt(+d.litres) * 5); // Adjust the scale as needed
-      });
-      g
-        .append("circle")
-        .attr("class", "testCircle")
-        .attr('r', 10)
-        .attr('cx', 10)
-        .attr('cy', 10)
+      d.latitude = +d.latitude;
+      d.litres = +d.litres;
+      return d;
+    }).then(csvData => {
+      g.selectAll(".marker")
+        .data(csvData)
+        .enter().append("circle")
+        .attr("class", "countryInfo")
+        .attr("cx", d => projection([d.longitude, d.latitude])[0])
+        .attr("cy", d => projection([d.longitude, d.latitude])[1])
+        .attr("r", d => Math.sqrt(+d.life_expectancy) * 1) // Adjust the scale as needed
+        .attr("fill", d => myColor(d.litres));
+    });
 
 
+      // Thanks test circle you did well
+      // g
+      //   .append("circle")
+      //   .attr("class", "testCircle")
+      //   .attr('r', 10)
+      //   .attr('cx', 10)
+      //   .attr('cy', 10)
+      // var colorA = "purple", colorB = "orange";
+  
+//   function drawScale(id, interpolator) {
+//     var data = Array.from(Array(100).keys());
+
+//     var cScale = d3.scaleSequential()
+//         .interpolator(interpolator)
+//         .domain([0,99]);
+// // console.log(cScale(5))
+//     var xScale = d3.scaleLinear()
+//         .domain([0,99])
+//         .range([0, 580]);
+
+//     var u = d3.select("#" + id)
+//         .selectAll("rect")
+//         .data(data)
+//         .enter()
+//         .append("rect")
+//         .attr("x", (d) => Math.floor(xScale(d)))
+//         .attr("y", 0)
+//         .attr("height", 40)
+//         .attr("width", (d) => {
+//             if (d == 99) {
+//                 return 6;
+//             }
+//             return Math.floor(xScale(d+1)) - Math.floor(xScale(d)) + 1;
+//          })
+//         .attr("fill", (d) => cScale(d));
+//   }
+
+//   drawScale("seq1", d3.interpolate(colorA, colorB));
+      
 
   </script>
+  <script>
+  
+    </script>
 </body>
 
 </html>
