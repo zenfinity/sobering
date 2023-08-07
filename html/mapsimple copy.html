@@ -57,7 +57,7 @@
 
     .countryInfo {
       /* fill: transparent; */
-      stroke:cornflowerblue;
+      stroke: transparent;
       stroke-width: 1;
       /* stroke-dasharray: 2, 2; */
       opacity: .8;
@@ -77,7 +77,7 @@
     <svg class="map" id="mapInteractive" width="960" height="480"></svg>
     <button id="reset">Reset Zoom</button><br />
   </div>
-  <svg id="seq1" width="580" height="40" ></svg>
+  <svg id="seq1" width="580" height="40"></svg>
 
   <!-- <script src="../js/map2.js"></script> -->
   <!-- <script src="https://cdn.skypack.dev/d3-scale@4"></script> -->
@@ -102,8 +102,36 @@
     var hexData;
 
     //_________________ Helper Functions
+    function drawScale(id, interpolator) {
+      var data = Array.from(Array(100).keys());
+
+      var cScale = d3.scaleSequential()
+        .interpolator(interpolator)
+        .domain([0, 99]);
+
+      var xScale = d3.scaleLinear()
+        .domain([0, 99])
+        .range([0, 580]);
+
+      var u = d3.select("#" + id)
+        .selectAll("rect")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("x", (d) => Math.floor(xScale(d)))
+        .attr("y", 0)
+        .attr("height", 40)
+        .attr("width", (d) => {
+          if (d == 99) {
+            return 6;
+          }
+          return Math.floor(xScale(d + 1)) - Math.floor(xScale(d)) + 1;
+        })
+        .attr("fill", (d) => cScale(d));
+    }//drawScale
 
 
+    
     //_________________ Zoom
     const zoom = d3.zoom()
       .extent([[0, 0], [width, height]])
@@ -138,9 +166,6 @@
       .attr("d", pathGenerator)
 
 
-
-
-
     //_________________ Draw
     // Map and countries
     Promise.all([
@@ -154,20 +179,38 @@
       // });
       // console.log(hexData);
       const countryName = tsvData.reduce((accumulator, d) => {
-        accumulator[d.iso_n3] = d.name;
+        accumulator[d.iso_n3] = {
+          'countryName': d.name,
+          'countryCode': d.iso_a3
+        };
+        return accumulator;
+      }, {});
+
+      const countryCode = tsvData.reduce((accumulator, d) => {
+        accumulator[d.iso_a3] = {
+          'countryID': d.iso_n3,
+          'countryName': d.name //add coordinates here for centroid?
+
+        };
         return accumulator;
       }, {});
 
       // console.log(tsvData)
+      // console.log(countryName)
+      // console.log(countryCode)
+      // console.log(csvData)
 
-      const countryInfo = {};
+      //Create new dict to get lat lng for centroid calc
+      var countryInfo = {};
       csvData.forEach(d => {
-        countryInfo[d.country_code] = {
-          'CountryName': d.country_name,
-          'Litres': d.litres = +d.litres, //convert string to number
-          'Life_Expectancy': d.life_expectancy = +d.life_expectancy,
-          'Latitude': d.latitude = +d.latitude,
-          'Longitude': d.longitude = +d.longitude
+        countryInfo = {
+          'countryID': countryCode[d.country_code],
+          'countryCode': d.country_code,
+          // 'countryName': d.country_name,
+          'litres': d.litres = +d.litres, //convert string to number
+          'life_Expectancy': d.life_expectancy = +d.life_expectancy,
+          'latitude': d.latitude = +d.latitude,
+          'longitude': d.longitude = +d.longitude
         }
       });
 
@@ -178,22 +221,16 @@
         .enter().append('path')
         .attr('class', 'country')
         .attr('d', pathGenerator)
+        .append('title')
+        .text(d => countryName[d.id].countryName)
 
     });
-    // Circle markers separately
 
-    // var myColor = d3.scaleLinear().domain([1,10]).range(["white", "blue"])
-    var myColor = d3.scaleLinear()
-      // .interpolator("purple", "orange")
-      .domain([0, 20])
-      .range(["white", "blue"]);
-    console.log(myColor(25));
-    // function colorScale(value) {
-    //   myColor = d3.scaleLinear().domain([1, 10]).range(["white", "blue"])
-    //   color = myColor(value)
-    //   console.log(color)
-    //   return color;
-    // }
+
+    // Circle markers separately
+    var myColor = d3.scaleSequential(d3.interpolateBlues)
+      .domain([0, 20]); //manual range for litre 
+
 
     d3.csv('/sobering/data/avgDrinksLocations.csv', function (d) {
       // console.log(d)
@@ -213,50 +250,24 @@
     });
 
 
-      // Thanks test circle you did well
-      // g
-      //   .append("circle")
-      //   .attr("class", "testCircle")
-      //   .attr('r', 10)
-      //   .attr('cx', 10)
-      //   .attr('cy', 10)
-      // var colorA = "purple", colorB = "orange";
-  
-//   function drawScale(id, interpolator) {
-//     var data = Array.from(Array(100).keys());
+    // Thanks test circle you did well
+    // g
+    //   .append("circle")
+    //   .attr("class", "testCircle")
+    //   .attr('r', 10)
+    //   .attr('cx', 10)
+    //   .attr('cy', 10)
+    // var colorA = "purple", colorB = "orange";
 
-//     var cScale = d3.scaleSequential()
-//         .interpolator(interpolator)
-//         .domain([0,99]);
-// // console.log(cScale(5))
-//     var xScale = d3.scaleLinear()
-//         .domain([0,99])
-//         .range([0, 580]);
 
-//     var u = d3.select("#" + id)
-//         .selectAll("rect")
-//         .data(data)
-//         .enter()
-//         .append("rect")
-//         .attr("x", (d) => Math.floor(xScale(d)))
-//         .attr("y", 0)
-//         .attr("height", 40)
-//         .attr("width", (d) => {
-//             if (d == 99) {
-//                 return 6;
-//             }
-//             return Math.floor(xScale(d+1)) - Math.floor(xScale(d)) + 1;
-//          })
-//         .attr("fill", (d) => cScale(d));
-//   }
 
-//   drawScale("seq1", d3.interpolate(colorA, colorB));
-      
+    drawScale("seq1", d3.interpolateBlues);
+
 
   </script>
   <script>
-  
-    </script>
+
+  </script>
 </body>
 
 </html>
