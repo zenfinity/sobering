@@ -36,7 +36,7 @@
   <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4"></script>
-  
+
 
   <!-- Hexbin Visualization -->
   <script src="/sobering/js/controller.js"></script>
@@ -70,40 +70,51 @@
       <!-- <h3 class="docs-header">Motivation</h3> -->
       <p>According to the CDC, 1 in 5 people age 19-40 die of alcohol related causes. $35B is spent annually in the US
         on care for alcohol use and use disorder, but still 88k people die every year. Globally, alcohol and drug
-        effects is the 4th leading
-        cause of preventable death in OECD countries. <br><br>The smallest populace States have the highest average
-        consumption. The highest is New Hampshire, ~17 L/yr.
-        The lowest in the world is Afghanistan, ~0.02 L/yr.
+        effects is the 4th leading cause of preventable death in OECD countries.<a href="#References">[5]</a> <br><br>
+        
+        The smallest populace States have the highest average consumption. The highest is New Hampshire, ~17 L/yr.
+        The lowest in the world is Afghanistan, ~0.02 L/yr.<a href="#References">[3]</a><br><br>
+        
+        "Over the next 30 years and on average across OECD countries, diseases and injuries caused by 
+        drinking more than 1 drink per day for women and 1.5 drinks per day for men--corresponding to lower-risk 
+        thresholds specifically used for the simulation--will cause life expectancy to be 0.9 years shorter than 
+        it otherwise would be; they will be also responsible for about 2.4% of total health expenditure; 
+        while GDP will be 1.6% lower than otherwise due to reduced workforce participation and productivity." 
+        <a href="#References">[1]</a>
       </p>
     </div>
 
-    <!-- Charts -->
-    <div class="row">
+    <!-- Map -->
+    <div class="section">
       <h5 class="header">Consumption by Region</h5>
-      <p class="description">...
-      </p>
-      <div class="map">
-        <svg id="mapInteractive" class="map" width="960" height="475"></svg>
+      <p class="description">...</p>
+      <div class="row">
+        <div class="map">
+          <svg id="mapInteractive" class="map" width="960" height="475"></svg>
+        </div>
       </div>
-      
-      <div>
-        <button id="reset">Reset Zoom</button><br/>
+      <div class="row">
+        <div class="ten columns" id="hoverInfo">Ten</div>
+        <div class="two columns">
+          <button id="reset">Reset Zoom</button>
+        </div>
+
       </div>
       <!-- <div>
         <svg id="time-series" width="800" height="200"></svg>
         <svg id="pie-chart" width="200" height="200"></svg>
       </div> -->
 
-      
 
+      <!-- Charts -->
       <div class="one-half column category">
 
         <!-- <img class="u-max-full-width" src="images/placeholder.png"> -->
       </div>
 
     </div>
-    <div class="section">
-      <h5>Consumption in Units of Blood</h5>
+    <!--<div class="section">
+       <h5>Consumption in Units of Blood</h5>
       <p>A unit of blood is ~500 mL (one-half a liter, or one pint). The largest alcohol consumers imbibe around triple
         the volume equivalent in their bodies yearly.</p>
       <div class="row">
@@ -113,20 +124,18 @@
         </div>
         <div class="one-third column volume">
           <h6>Highest Alcohol Consumption in Blood</h6>
-          <!-- <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_top.png"> -->
+        
           <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
           <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
           <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_human.png">
         </div>
         <div class="one-third column volume">
-          <!-- <p>Lowest Alcohol Consumer</p>
-          <div id="graph"></div> -->
-          <!-- <img class="u-max-full-width volume" src="images/charts/Volume_pictogram_bottom.png"> -->
+    
         </div>
-      </div>
-    </div>
+      </div> 
+    </div>-->
 
-    <div class="row">
+    <div class="section">
       <h5 class="header">Top 19 Consuming States over time, 2010-2019</h5>
       <p class="description">Per capita per year. US States included since population sizes are comparable to smaller
         countries.
@@ -147,36 +156,39 @@
     <!-- References -->
     <section>
       <div class="row"><br></div> <!--This provides padding for top of section. Fix with css.-->
-      <h5 class="heading">References</h5>
+      <h5 class="heading" id="References">References</h5>
       <div class="row">
         <div class="eleven column">
           <!-- <p class="section-description">Skeleton is an amazingly easy place to start with responsive development. If you want to learn more, just visit the documentation!</p> -->
-          <ul>
-            <li><a
+          <ol>
+            <li><a id="ref1" href="https://www.oecd.org/coronavirus/policy-responses/the-effect-of-covid-19-on-alcohol-consumption-and-policy-responses-to-prevent-harmful-alcohol-consumption-53890024/#section-d1e395">
+              Lower life expectancy due to alcohol consumption, OECD</a></li>
+            <li><a id="ref2"
                 href="https://www.who.int/images/default-source/maps/global_adult_percapita_consumption_2016.png?sfvrsn=6cc7b2e7_0">World
                 Health Organization (WHO) Map of Total alcohol consumption per capita, 2016</a></li>
-            <li><a href="https://www.who.int/data/gho/indicator-metadata-registry/imr-details/4759">WHO Global Data of
+            <li><a id="ref3"
+              href="https://www.who.int/data/gho/indicator-metadata-registry/imr-details/4759">WHO Global Data of
                 Total alcohol consumption per capita</a></li>
-            <li><a href="https://pubs.niaaa.nih.gov/publications/surveillance119/CONS20.htm">US Data of Total alcohol
+            <li><a id="ref4" href="https://pubs.niaaa.nih.gov/publications/surveillance119/CONS20.htm">US Data of Total alcohol
                 consumption per capita, National Institute on Alcohol Abuse and Alcoholism (NIAAA) Surveillance Report
                 #119</a></li>
-            <li><a
+            <li><a id="ref5"
                 href="https://www.oecd-ilibrary.org/sites/3b4fdbf2-en/index.html?itemId=/content/component/3b4fdbf2-en">Organisation
                 for Economic Co-operation and Development (OECD) Data on Preventable Deaths</a></li>
-            <li><a href="https://www.cdc.gov/chronicdisease/resources/publications/factsheets/alcohol.htm">CDC Data on
+            <li><a id="ref2" href="https://www.cdc.gov/chronicdisease/resources/publications/factsheets/alcohol.htm">CDC Data on
                 Excessive Alchol Use</a></li>
-            <li><a href="https://www.redcrossblood.org/donate-blood/dlp/whole-blood.html">Red Cross, Whole Blood</a>
+            <li><a id="ref6" href="https://www.redcrossblood.org/donate-blood/dlp/whole-blood.html">Red Cross, Whole Blood</a>
             </li>
-            <li><a href="https://clinicalcenter.nih.gov/blooddonor/donationtypes/whole_blood.html">National Institutes
+            <li><a id="ref7" href="https://clinicalcenter.nih.gov/blooddonor/donationtypes/whole_blood.html">National Institutes
                 of Health (NIH), Whole Blood</a></li>
             <!-- <li>
-              Item 2
+              Item 2 
               <ul>
                 <li>Item 2.1</li>
                 <li>Item 2.2</li>
               </ul>
             </li> -->
-          </ul>
+          </ol>
         </div>
       </div>
     </section>

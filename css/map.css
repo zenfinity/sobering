@@ -3,6 +3,9 @@
     /* overflow: hidden; */
   }
   
+  svg.map {
+    background-color: transparent;
+  }
   
   
   .country {
@@ -37,5 +40,13 @@
   /* .sphere {
     fill: rgba(224, 255, 255, 0.4);
   } */
+
+  .countryInfo {
+    fill: black;
+    stroke:gray;
+    stroke-width: 1;
+    /* stroke-dasharray: 2, 2; */
+    opacity: 1;
+  }
 
 

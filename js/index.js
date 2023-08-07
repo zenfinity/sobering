@@ -72,41 +72,68 @@ Promise.all([
     d3.csv('/sobering/data/avgDrinksLocations.csv'),
     d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json')
 ]).then(([csvData, topoJSONdata]) => {
-hexData = csvData.forEach(function(d) {
-    d.litres = +d.litres;
-    d["life_expectancy"] = +d["life_expectancy"];
-  });
-  console.log(hexData);
+    // hexData = csvData.forEach(function (d) {
+    //     d.litres = +d.litres;
+    //     d["life_expectancy"] = +d["life_expectancy"];
+    // });
+    // console.log(hexData);
     // const countryName = tsvData.reduce((accumulator, d) => {
     //     accumulator[d.iso_n3] = d.name;
     //     return accumulator;
     // }, {});
+// console.log(csvData)
+
+    const countryName = {};
+    csvData.forEach(d => {
+        countryName[d.country_code] = {
+            'CountryName': d.country_name,
+            'Litres': d.litres = +d.litres, //convert string to number
+            'Life_Expectancy': d.life_expectancy = +d.life_expectancy,
+            'Latitude': d.latitude = +d.latitude,
+            'Longitude': d.longitude = +d.longitude
+        }
+    });
+
+    // console.log(countryName)
 
 
-    // const countryName = {};
-    // tsvData.forEach(d => {
-    //     countryName[d.iso_n3] = d.name;
-    // });
-
-    
 
     const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
     g.selectAll('path').data(countries.features)
         .enter().append('path')
         .attr('class', 'country')
         .attr('d', pathGenerator)
-        // .append('title')
-        // .text(d => countryName[d.id])
+    // .append('title')
+    // .text(d => countryName[d.id])
 
     // g.append("path")
     //     .datum(graticule)
     //     .attr("class", "graticule")
     //     .attr("d", path);
-    
+
     // d3.select("svg").insert("path", "path.countries")
     //     .datum(graticule.outline)
     //     .attr("class", "graticule outline")
     //     .attr("d", geoPath)
+
+    g.selectAll(".countryInfo")
+        .data(countryName)
+        .enter().append("circle")
+        .attr('r', 100)
+        // .attr('cx', 10)
+        // .attr('cy', 10)
+        .attr('cx', function(d) {
+            console.log(d)
+            var coords = projection([d.Longitude, d.Latitude])
+            console.log(coords)
+            return 10;
+        })
+        .attr('cy', function(d) {
+            // var coords = projection([d.Longitude, d.Latitude])
+            // console.log(coords)
+            return 10;
+        });
+
 
 
 
