@@ -1,0 +1,42 @@
+.map {
+  margin: 0px;
+}
+
+svg.map {
+  background-color: transparent;
+}
+
+.country {
+  fill: darkgrey;
+  stroke: whitesmoke;
+  stroke-width: 0.05px;
+  opacity: 1;
+}
+
+.country:hover {
+  stroke: gray;
+  stroke-width: 1px;
+}
+
+.graticule {
+  fill: transparent;
+  stroke: gray;
+  stroke-width: 1;
+  stroke-dasharray: 2, 2;
+  opacity: .25;
+}
+
+.outline {
+  fill: transparent;
+  stroke: gray;
+  stroke-width: 1;
+  opacity: .25;
+}
+
+
+.countryInfo {
+
+  stroke: transparent;
+  stroke-width: 1;
+  opacity: .8;
+}

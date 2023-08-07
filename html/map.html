@@ -3,18 +3,48 @@
 
 <head>
     <!-- <script src="//d3js.org/d3.v4.min.js"></script> -->
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js" charset="utf-8"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <!-- Load d3.js -->
+    <!-- <script src="https://d3js.org/d3.v4.js" charset="utf-8"></script> -->
+    <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
+    <script>src = "https://d3js.org/topojson.v1.min.js"</script>
+    <script>src = "https://cdnjs.cloudflare.com/ajax/libs/d3-hexbin/0.2.2/d3-hexbin.min.js"</script>
+
+    <!-- Load Charts -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://kit.fontawesome.com/6af45b940a.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <!-- <script src="https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-geo-projection@4"></script>
+    <!-- <script>
+
+        const projection = d3.geoEqualEarth();
+        const path = d3.geoPath(projection);
+
+    </script> -->
 
 </head>
 
 <body>
-    
+
 
     <!-- Create an element where the map will take place -->
-    <svg id="my_dataviz" width="400" height="300"></svg>
+    <!-- <div id="graph"></div> -->
+    <svg id="mapworld" width="960" height="500"></svg>
+    <!-- <div class="map">
+        <svg id="mapInteractive" ></svg>
+    <button id="reset">Reset Zoom</button><br/>
+    </div> -->
+    <script type="module" src="../js/map.js"></script>
+    <!-- <script type="module" src="../js/index.js"></script> -->
+    <!-- <svg id="my_dataviz" width="400" height="300"></svg> -->
+    <!-- <div id="vis"></div> -->
+
 
     <!-- <script>
 
@@ -44,5 +74,9 @@
         })
 
     </script> -->
-    <script src="../js/map.js"></script>
+    <!-- <script src="../js/map.js"></script> -->
+
+    <!-- <script>src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"</script>
+    <script src="../js/hexbin.js"></script>
+    <script src="../js/pictogram.js"></script> -->
 </body>

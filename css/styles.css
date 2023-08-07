@@ -1,0 +1,21 @@
+.map {
+    margin: 0px;
+    /* overflow: hidden; */
+  }
+  
+  .sphere {
+    fill: rgba(224, 255, 255, 0.4);
+  }
+  
+  .country {
+    fill: darkgrey;
+    stroke: whitesmoke;
+    stroke-width: 0.05px;
+    opacity: .75;
+  }
+  
+  .country:hover {
+    /* fill: gray; */
+    stroke: gray;
+    stroke-width: 1px;
+  }
